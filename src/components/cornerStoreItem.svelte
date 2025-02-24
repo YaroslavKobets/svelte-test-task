@@ -1,19 +1,31 @@
-<script>
+<script lang="ts">
+	import type { CategoryItem } from '../data/storeItems'
+	import { coinBalance } from '../store'
 	import IconSvg from './IconSvg.svelte'
 	import Button from './ui/button.svelte'
 	import Timer from './ui/timer.svelte'
 
-	export let item
-	let isCollected = false
-	let timer
-	let timeLeft = 0
+	export let item: CategoryItem
 
-	const handleButtonClick = () => {
+	let isCollected: boolean = false
+	let timer: ReturnType<typeof setTimeout> | undefined
+	let timeLeft: number = 0
+
+	$: unavailable = item.cost > $coinBalance
+
+	const handleButtonClick = (): void => {
+		coinBalance.update(balance => {
+			if (balance >= item.cost) {
+				return balance - item.cost
+			} else {
+				return balance
+			}
+		})
+
 		isCollected = true
-		console.log(isCollected)
 
 		timeLeft = 5000
-		clearTimeout(timer)
+		if (timer) clearTimeout(timer)
 
 		timer = setTimeout(() => {
 			isCollected = false
@@ -22,7 +34,7 @@
 	}
 </script>
 
-<div class="corner-store-item" class:collected={isCollected}>
+<div class="corner-store-item" class:collected={isCollected} class:unavailable>
 	<div class="corner-store-item__image">
 		<img src={item.imageUrl} alt="" />
 		<div class="corner-store-item__timer"><Timer /></div>
@@ -41,7 +53,9 @@
 		<div class="corner-store-item__action">
 			<strong>{item.freeSpins} FS</strong>
 
-			<Button onClick={handleButtonClick}><IconSvg />{item.cost}</Button>
+			<Button onClick={handleButtonClick} disabled={unavailable}
+				><IconSvg />{item.cost}</Button
+			>
 		</div>
 	</div>
 </div>
@@ -53,13 +67,20 @@
 		padding-block: 8px;
 		padding-inline: 8px 16px;
 		color: var(--stb-text-tertiary);
-		min-height: 114px;
+		min-height: var(--stb-corner-store-item-height, 114px);
 		display: grid;
-		grid-template-columns: 98px 1fr;
+		grid-template-columns: var(--stb-corner-store-item-image-size, 98px) 1fr;
 		align-items: center;
 		gap: 8px;
 		position: relative;
 		overflow: hidden;
+		@include screen-s {
+			padding: 4px;
+			gap: 4px;
+			border-radius: var(--stb-border-radius-m);
+			--stb-corner-store-item-image-size: 86px;
+			--stb-corner-store-item-height: 94px;
+		}
 		&::before {
 			content: 'Collected ';
 			position: absolute;
@@ -84,6 +105,10 @@
 				opacity: 1;
 				pointer-events: all;
 			}
+		}
+		&.unavailable {
+			filter: grayscale(1);
+			pointer-events: none;
 		}
 		&__image {
 			overflow: hidden;

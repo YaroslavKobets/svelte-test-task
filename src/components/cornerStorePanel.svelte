@@ -12,8 +12,10 @@
 <style lang="scss">
 	.corner-store-panel {
 		width: 100%;
-		max-width: 388px;
 		background-color: rgb(var(--stb-black-50));
 		border-radius: var(--stb-border-radius-xl);
+		@include screen-m {
+			border-radius: var(--stb-border-radius-l);
+		}
 	}
 </style>

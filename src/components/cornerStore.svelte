@@ -37,15 +37,19 @@
 	<CornerStoreButton />
 </div>
 
-<style>
+<style lang="scss">
 	.corner-store {
 		width: 100%;
-		max-width: 388px;
+		max-width: var(--stb-corner-store-panel-width);
 		display: grid;
 		justify-items: end;
 		position: fixed;
 		gap: 14px;
-		right: 32px;
-		bottom: 32px;
+		right: var(--stb-corner-store-offset);
+		bottom: var(--stb-corner-store-offset);
+
+		@include screen-m {
+			gap: 4px;
+		}
 	}
 </style>

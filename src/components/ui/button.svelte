@@ -37,8 +37,10 @@
 			filter: grayscale(1);
 			cursor: not-allowed;
 		}
-		&:hover {
-			--stb-button-opacity: 0;
+		@include hover-support {
+			&:hover {
+				--stb-button-opacity: 0;
+			}
 		}
 	}
 </style>

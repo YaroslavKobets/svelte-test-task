@@ -14,10 +14,10 @@
 
 <style lang="scss">
 	.corner-button {
-		$size: 62px;
+		--stb-corner-button-size: 62px;
 
-		width: $size;
-		height: $size;
+		width: var(--stb-corner-button-size);
+		height: var(--stb-corner-button-size);
 		border-radius: var(--stb-border-radius-l);
 		position: relative;
 		display: flex;
@@ -40,11 +40,16 @@
 			background-image: var(--stb-gradient-0);
 			z-index: -1;
 		}
-		&:hover {
-			--stb-corner-button-bg-opacity: 0;
+		@include hover-support {
+			&:hover {
+				--stb-corner-button-bg-opacity: 0;
+			}
 		}
 		&:active {
 			transform: scale(0.95);
+		}
+		@include screen-m {
+			--stb-corner-button-size: 44px;
 		}
 	}
 </style>

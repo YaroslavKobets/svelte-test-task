@@ -1,3 +1,24 @@
+@mixin screen-m {
+	@media (max-width: 768px) {
+		@content;
+	}
+}
+@mixin screen-height-m {
+	@media (max-height: 780px) {
+		@content;
+	}
+}
+@mixin screen-s {
+	@media (max-width: 460px) {
+		@content;
+	}
+}
+@mixin hover-support {
+	@media (any-hover: hover) {
+		@content;
+	}
+}
+
 :root {
 	--stb-border-radius-s: 4px;
 	--stb-border-radius-m: 8px;
@@ -43,6 +64,27 @@
 	--stb-text-tertiary: rgb(var(--stb-white-75));
 
 	--stb-text-accent: rgb(var(--stb-blue-0));
+
+	--stb-corner-store-panel-width: 388px;
+	--stb-corner-store-offset: 32px;
+	--stb-corner-store-padding: 12px;
+	--stb-corner-store-height: 410px;
+	@include screen-m {
+		--stb-corner-store-offset: 6px;
+		--stb-corner-store-padding: 8px;
+		--stb-corner-store-height: 340px;
+	}
+	@include screen-s {
+		--stb-corner-store-panel-width: calc(
+			100% - (var(--stb-corner-store-offset) * 2)
+		);
+		--stb-corner-store-padding: 4px;
+	}
+
+	@include screen-height-m {
+		--stb-corner-store-height: 340px;
+		--stb-corner-store-offset: 16px;
+	}
 }
 
 *,

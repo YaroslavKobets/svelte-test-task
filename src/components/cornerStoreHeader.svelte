@@ -1,5 +1,5 @@
 <script>
-	import { isPanelOpen } from '../store.js'
+	import { coinBalance, isPanelOpen } from '../store.js'
 	import IconSvg from './IconSvg.svelte'
 	import Timer from './ui/timer.svelte'
 
@@ -26,7 +26,8 @@
 	</div>
 	<div class="corner-store-header__control">
 		<div class="corner-store-header__balance">
-			<IconSvg color="#C00165" /> 99999
+			<IconSvg color="#C00165" />
+			{$coinBalance}
 		</div>
 		<button class="corner-store-header__close" on:click={togglePanel}>
 			<IconSvg icon="close" size={24} />
@@ -44,6 +45,10 @@
 		padding-bottom: 20px;
 		position: relative;
 		z-index: 1;
+		@include screen-s {
+			gap: 0;
+			padding-bottom: 8px;
+		}
 		&__decor {
 			position: absolute;
 			inset: 0;
@@ -64,6 +69,7 @@
 				z-index: -1;
 				background-image: var(--stb-gradient-25);
 				overflow: hidden;
+				-webkit-filter: blur(100px);
 				filter: blur(100px);
 			}
 		}
@@ -134,8 +140,10 @@
 			color: var(--stb-text-tertiary);
 			transition: color var(--stb-transition-time);
 			cursor: pointer;
-			&:hover {
-				color: var(--stb-text-secondary);
+			@include hover-support {
+				&:hover {
+					color: var(--stb-text-secondary);
+				}
 			}
 		}
 		&__balance {
